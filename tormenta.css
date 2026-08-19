@@ -128,3 +128,27 @@ marging & padding
     color: #ff0000;
     text-decoration: underline;
 }
+
+.subtitulo {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #ca0909bf;
+}
+
+.descricao {
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+.cadastro {
+    width: 420px;
+}
+
+.cadastro .input-box {
+    margin: 20px 0;
+}
