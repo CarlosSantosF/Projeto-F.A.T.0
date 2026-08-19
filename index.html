@@ -8,22 +8,29 @@
 </head>
 <body>
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-topo">
-            <div class="brand">F.A.T.O</div>
-            <button class="icon-btn" id="recolher-sidebar" title="Recolher">‹</button>
+    <div class="sidebar-head">
+      <div class="brand">F.A.T.O.</div>
+      <button class="icon-btn" id="collapseSidebar" title="Recolher">‹</button>
+    </div>
+    <div class="sidebar-actions">
+      <button class="primary-btn" id="newSheetBtn">+ Nova ficha</button>
+    </div>
+    <div class="sheet-list" id="sheetList"></div>
+    <div class="sidebar-footer">
+      <div class="account-row">
+        <div class="avatar" id="accountAvatar">?</div>
+        <div class="account-text">
+          <strong id="accountName">Nome de usuário</strong>
+          <span id="accountEmail">emaildousuario@exemplo.com</span>
         </div>
-        <div class="sidebar-btn">
-            <button class="primeiro-btn" id="nova-ficha">+ Nova Ficha</button>
-        </div>
-        <div class="fichas-lista" id="fichas-lista"></div>
-            <div class="sidebar-footer">
-                <div class="conta-display">
-                    <div class="conta-nome">
-                        <strong id="nome-conta"></strong>
-                    </div> 
-                </div>
-                <button class="segundo-btn" id="login-btn">Fazer Login</button>
-            </div>
-    </aside>
+      </div>
+      <a href="login.html"><button class="secondary-btn" id="googleBtn" >Fazer Login</button></a>
+    </div>
+  </aside>
+    <main class="app-shell">
+    <header class="topbar">
+      <button class="mobile-menu icon-btn" id="mobileMenu">☰</button>
+      <div class="topbar-title">Ficha de Personagem</div>
+    </header>
 </body>
 </html>
