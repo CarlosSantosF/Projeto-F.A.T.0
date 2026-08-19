@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="tormenta.css">
+    <title>Cadastro - F.A.T.O</title>
+</head>
+
+<body>
+
+    <main class="container cadastro">
+
+        <form id="cadastroForm">
+
+            <h1>F.A.T.O</h1>
+
+            <p class="subtitulo">
+                Criar conta
+            </p>
+
+            <div class="input-box">
+                <input
+                    type="text"
+                    placeholder="Nome de usuário"
+                    required
+                >
+            </div>
+
+            <div class="input-box">
+                <input
+                    type="email"
+                    placeholder="E-mail"
+                    required
+                >
+            </div>
+
+            <div class="input-box">
+                <input
+                    type="password"
+                    placeholder="Senha"
+                    required
+                >
+            </div>
+
+            <div class="input-box">
+                <input
+                    type="password"
+                    placeholder="Confirmar senha"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login">
+                Cadastrar
+            </button>
+
+            <div class="register-link">
+                <p>
+                    Já possui uma conta?
+                    <a href="login.html">Fazer login</a>
+                </p>
+            </div>
+
+        </form>
+
+    </main>
+
+    <script>
+        document.getElementById("cadastroForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const senha = document.querySelectorAll('input[type="password"]');
+
+            if (senha[0].value !== senha[1].value) {
+                alert("As senhas não são iguais!");
+                return;
+            }
+
+            alert("Cadastro realizado com sucesso!");
+
+            window.location.href = "login.html";
+        });
+    </script>
+
+</body>
+</html>
