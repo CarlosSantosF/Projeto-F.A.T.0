@@ -1,74 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="Style.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Projeto F.A.T.O</title>
 </head>
-<body >
-    <div class="input-inicio"> <!--Div das áreas Personagem e Jogador -->
-        <input type="text" placeholder="Personagem"> 
-        <input type="text" placeholder="Jogador">
-    </div>
-    <div class="input-info"> <!--Div das áreas Raça, Origem, Classe e Divindade -->
-        <label for="raça">Raça:</label> <!--Escreve o texto "Raça" a esquerda do input -->
-        <input type="text" name="raça" id="raça" list="list-raças" placeholder="Escolha a raça"> <!--Input para selecionar a raça -->
-        <datalist id="list-raças"> 
-            <option value="Humano"></option>
-            <option value="Dahllan"></option>
-            <option value="Anão"></option>
-            <option value="Elfo"></option>
-            <option value="Goblin"></option>
-            <option value="Lefou"></option>
-            <option value="Minotauro"></option>
-            <option value="Qareen"></option>
-            <option value="Suraggel"></option>
-            <option value="Sílfide"></option>
-            <option value="Seria/Tritão"></option>
-            <option value="Osteon"></option>
-            <option value="Medusa"></option>
-            <option value="Kliren"></option>
-            <option value="Hynne"></option>
-            <option value="Golem"></option>
-            <option value="Trog"></option>
-        </datalist>
-        <label for="origem">Origem:</label>
-        <input type="text" name="origem" id="origem" list="list-origens" placeholder="Escolha a origem">
-        <datalist id="list-origens">
-            <option value="Mendigo"></option>
-        </datalist>
-        <label for="classe">Classe:</label>
-        <input type="text" name="classe" id="classe" list="list-classes" placeholder="Escolha a classe">
-        <datalist id="list-classes">
-            <option value="Guerreiro"></option>
-        </datalist>
-        <label for="divindade">Divindade:</label>
-        <input type="text" name="divindade" id="divindade" list="list-divindades" placeholder="Escolha a divindade">
-        <datalist id="list-divindades">
-            <option value="Valkaria"></option>
-        </datalist>
-        <hr>
-    <div class="pericias">
-    <h2>Perícias</h2>
-
-    <div class="lista-pericias">
-        <div class="pericia">
-            <input type="checkbox" id="Acrobacia">
-            <label for="Acrobacia">Acrobacia = </label>
-            <input type="text" id="metade do nível" placeholder="0">
-            
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-topo">
+            <div class="brand">F.A.T.O</div>
+            <button class="icon-btn" id="recolher-sidebar" title="Recolher">‹</button>
         </div>
-
-        <div class="pericia">
-            <input type="checkbox" id="Adestramento">
-            <label for="Adestramento">Adestramento</label>
+        <div class="sidebar-btn">
+            <button class="primeiro-btn" id="nova-ficha">+ Nova Ficha</button>
         </div>
-
-        <div class="pericia">
-            <input type="checkbox" id="Atletismo">
-            <label for="Atletismo">Atletismo</label>
-        </div>
-    </div>
-</div>
+        <div class="fichas-lista" id="fichas-lista"></div>
+            <div class="sidebar-footer">
+                <div class="conta-display">
+                    <div class="conta-nome">
+                        <strong id="nome-conta"></strong>
+                    </div> 
+                </div>
+                <button class="segundo-btn" id="login-btn">Fazer Login</button>
+            </div>
+    </aside>
+</body>
 </html>
