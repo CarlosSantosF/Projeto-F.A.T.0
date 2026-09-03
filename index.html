@@ -29,8 +29,68 @@
   </aside>
     <main class="app-shell">
     <header class="topbar">
-      <button class="mobile-menu icon-btn" id="mobileMenu">☰</button>
       <div class="topbar-title">Ficha de Personagem</div>
     </header>
+
+<div class="character-sheet paper" id="sheetFront">
+        <section class="hero-grid">
+          <div class="crest">T20</div>
+          <div class="field wide"><label>Personagem</label><input data-field="name" placeholder="Nome do personagem"></div>
+          <div class="field"><label>Raça</label><select data-field="race"></select></div>
+          <div class="field"><label>Origem</label><select data-field="origin"></select></div>
+          <div class="field"><label>Classe</label><select data-field="class"></select></div>
+          <div class="field"><label>Nível</label><input type="number" min="1" max="20" data-field="level"></div>
+          <div class="field"><label>Divindade</label><input data-field="deity"></div>
+        </section>
+
+        <section class="attributes panel">
+          <div class="section-title">Atributos</div>
+          <div class="attribute-grid" id="attributesGrid"></div>
+        </section>
+
+        <section class="resource-grid">
+          <div class="stat-box"><span>PV</span><strong id="pvMax">0</strong><input data-field="pvCurrent" type="number"></div>
+          <div class="stat-box"><span>PM</span><strong id="pmMax">0</strong><input data-field="pmCurrent" type="number"></div>
+          <div class="stat-box"><span>Desloc.</span><strong id="speed">9m</strong></div>
+          <div class="stat-box"><span>Defesa</span><strong id="defense">10</strong></div>
+        </section>
+
+        <div class="columns-2">
+          <section class="panel skills-panel">
+            <div class="section-title">Perícias</div>
+            <div class="skill-head"><span></span><span>Perícia</span><span>Mod.</span><span></span></div>
+            <div id="skillsList"></div>
+          </section>
+
+          <div class="right-stack">
+            <section class="panel saving-panel">
+              <div class="section-title">Resistências</div>
+              <div class="saves" id="savesList"></div>
+            </section>
+
+            <section class="panel attack-panel">
+              <div class="section-title">Ataques</div>
+              <div class="resizable-list" id="attacksList"></div>
+              <button class="add-row" data-add="attack">+ adicionar ataque</button>
+            </section>
+          </div>
+        </div>
+
+        <section class="panel resizable-panel">
+          <div class="section-title">Habilidades & Magias</div>
+          <div class="resizable-list" id="abilitiesList"></div>
+          <button class="add-row" data-add="ability">+ adicionar habilidade</button>
+        </section>
+
+        <section class="panel resizable-panel">
+          <div class="section-title">Equipamento</div>
+          <div class="money-row"><label>T$</label><input data-field="money" type="number" min="0"><span>Carga</span><strong id="encumbrance">0 / 0</strong></div>
+          <div class="resizable-list" id="itemsList"></div>
+          <button class="add-row" data-add="item">+ adicionar item</button>
+        </section>
+      </div>
+    </section>
+  </main>
+  </div>
 </body>
 </html>
