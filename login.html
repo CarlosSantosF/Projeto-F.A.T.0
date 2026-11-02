@@ -3,46 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="tormenta.css">
-    <title>loginFATO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Login - F.A.T.O</title>
 </head>
-<body>
-    <div>
-        <main class="container"> 
-        <form>
+<body class="auth">
+    <button type="button" class="tema-toggle" id="botaoTema" onclick="alternarModoEscuro()">Modo escuro</button>
+
+    <main class="container">
+        <form id="loginForm">
             <h1>F.A.T.O</h1>
+            <p class="subtitulo">Entrar</p>
+
             <div class="input-box">
-                <input placeholder="Usuário" type="email">
-                <i class="bx bxs-user"></i>
+                <input id="campoEmail" placeholder="E-mail" type="email" autocomplete="email">
             </div>
+
             <div class="input-box">
-                <input placeholder="Senha" type="password">
-                <i class="bx bxs-lock-alt"></i>
-            </div>
-
-            <div class="remember-forgot">
-                <label>
-                    <input type="checkbox">
-                    Lembrar senha
-                </label>
-               <a href="recuperar-senha.html" class="esqueci-senha">
-    Esqueci a senha
-</a>
-            </div>
-
-            <button type="submit" class="login">Login</button>
-
-            <div class="register-link">
-
-              <p>  Não tem uma conta?
-    <a href="cadastre-se.html">Cadastre-se</a>
-</p>
+                <div class="campo-senha-container">
+                    <input id="campoSenha" placeholder="Senha" type="password" autocomplete="current-password">
+                    <button type="button" id="btnOlho" onclick="alternarVisibilidadeSenha()">Mostrar</button>
                 </div>
             </div>
-        </form>
 
+            <div id="mensagemFeedback"></div>
+
+            <div class="remember-forgot">
+                <label><input type="checkbox">Lembrar senha</label>
+                <a href="recuperar-senha.html" class="esqueci-senha">Esqueci a senha</a>
+            </div>
+
+            <button type="button" id="btnAcessar" class="login" onclick="validarAcesso()">Entrar no Sistema</button>
+
+            <div class="register-link">
+                <p>Não tem uma conta? <a href="cadastre-se.html">Cadastre-se</a></p>
+            </div>
+        </form>
     </main>
 
-    </body>
+    <script src="tema.js"></script>
+    <script>
+        function mostrarFeedback(texto, tipo) {
+            var feedback = document.getElementById("mensagemFeedback");
+            feedback.className = tipo;
+            feedback.textContent = texto;
+        }
 
-    </html>
+        function validarAcesso() {
+            var email = document.getElementById("campoEmail").value.trim();
+            var senha = document.getElementById("campoSenha").value;
+
+            if (email === "" || senha === "") {
+                mostrarFeedback("Atenção: Preencha todos os campos obrigatórios!", "erro");
+                return;
+            }
+
+            if (email.indexOf("@") === -1) {
+                mostrarFeedback("E-mail Inválido: É obrigatório inserir o caractere '@' no endereço!", "erro");
+                return;
+            }
+
+            validarRequisitosSenha(senha);
+        }
+
+        function validarRequisitosSenha(senha) {
+            if (senha.length < 6) {
+                mostrarFeedback("Senha Curta: A senha precisa ter no mínimo 6 caracteres!", "erro");
+                return;
+            }
+
+            if (!/\d/.test(senha)) {
+                mostrarFeedback("Senha Fraca: A senha deve conter pelo menos um dígito numérico (0 a 9)!", "erro");
+                return;
+            }
+
+            if (senha !== "tcc2026") {
+                mostrarFeedback("Retorno do Sistema: Credenciais incorretas ou usuário não cadastrado.", "erro");
+                return;
+            }
+
+            mostrarFeedback("Sucesso: Acesso liberado.", "sucesso");
+            setTimeout(function () {
+                window.location.href = "index.html";
+            }, 800);
+        }
+
+        function alternarVisibilidadeSenha() {
+            var campo = document.getElementById("campoSenha");
+            var botao = document.getElementById("btnOlho");
+
+            if (campo.type === "password") {
+                campo.type = "text";
+                botao.textContent = "Ocultar";
+            } else {
+                campo.type = "password";
+                botao.textContent = "Mostrar";
+            }
+        }
+    </script>
+</body>
+</html>

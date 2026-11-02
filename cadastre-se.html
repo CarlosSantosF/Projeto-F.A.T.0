@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="tormenta.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Cadastro - F.A.T.O</title>
 </head>
 
-<body>
+<body class="auth">
+    <button type="button" class="tema-toggle" id="botaoTema" onclick="alternarModoEscuro()">Modo escuro</button>
 
     <main class="container cadastro">
 
-        <form id="cadastroForm">
+        <form id="cadastroForm" onsubmit="return cadastrar()">
 
             <h1>F.A.T.O</h1>
 
@@ -20,35 +24,31 @@
             </p>
 
             <div class="input-box">
+                <input type="text" placeholder="Nome de usuário" required>
+            </div>
+
+            <div class="input-box">
+                <input type="email" placeholder="E-mail" required>
+            </div>
+
+            <div class="input-box">
                 <input
-                    type="text"
-                    placeholder="Nome de usuário"
+                    type="tel"
+                    id="campoTelefone"
+                    maxlength="15"
+                    placeholder="(11) 99999-9999"
+                    autocomplete="tel"
+                    oninput="aplicarMascaraTelefone(this)"
                     required
                 >
             </div>
 
             <div class="input-box">
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    required
-                >
+                <input type="password" id="campoSenha" placeholder="Senha" required>
             </div>
 
             <div class="input-box">
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    required
-                >
-            </div>
-
-            <div class="input-box">
-                <input
-                    type="password"
-                    placeholder="Confirmar senha"
-                    required
-                >
+                <input type="password" id="campoConfirmar" placeholder="Confirmar senha" required>
             </div>
 
             <button type="submit" class="login">
@@ -66,21 +66,49 @@
 
     </main>
 
+    <script src="tema.js"></script>
     <script>
-        document.getElementById("cadastroForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        function aplicarMascaraTelefone(campo) {
+            var texto = campo.value;
+            var numeros = "";
 
-            const senha = document.querySelectorAll('input[type="password"]');
+            for (var i = 0; i < texto.length; i++) {
+                var letra = texto.charAt(i);
+                if (letra >= "0" && letra <= "9") {
+                    numeros = numeros + letra;
+                }
+            }
 
-            if (senha[0].value !== senha[1].value) {
+            if (numeros.length > 11) {
+                numeros = numeros.substring(0, 11);
+            }
+
+            var formatado = numeros;
+            if (numeros.length > 2) {
+                var ddd = numeros.substring(0, 2);
+                var resto = numeros.substring(2);
+                if (resto.length > 5) {
+                    resto = resto.substring(0, 5) + "-" + resto.substring(5);
+                }
+                formatado = "(" + ddd + ") " + resto;
+            }
+
+            campo.value = formatado;
+        }
+
+        function cadastrar() {
+            var senha = document.getElementById("campoSenha").value;
+            var confirmar = document.getElementById("campoConfirmar").value;
+
+            if (senha !== confirmar) {
                 alert("As senhas não são iguais!");
-                return;
+                return false;
             }
 
             alert("Cadastro realizado com sucesso!");
-
             window.location.href = "login.html";
-        });
+            return false;
+        }
     </script>
 
 </body>

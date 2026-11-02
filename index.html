@@ -1,46 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Projeto F.A.T.O</title>
 </head>
 <body>
-    <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
       <div class="brand">F.A.T.O.</div>
-      <button class="icon-btn" id="collapseSidebar" title="Recolher">‹</button>
+      <button class="icon-btn" id="collapseSidebar" title="Recolher menu" onclick="recolherMenu()">‹</button>
     </div>
     <div class="sidebar-actions">
-      <button class="primary-btn" id="newSheetBtn">+ Nova ficha</button>
+      <button class="primary-btn" id="newSheetBtn" onclick="novaFichaClick()">+ Nova ficha</button>
     </div>
     <div class="sheet-list" id="sheetList"></div>
     <div class="sidebar-footer">
       <div class="account-row">
         <div class="avatar" id="accountAvatar">?</div>
         <div class="account-text">
-          <strong id="accountName">Nome de usuário</strong>
-          <span id="accountEmail">emaildousuario@exemplo.com</span>
+          <strong id="accountName">Visitante</strong>
+          <span id="accountEmail">Entre para salvar suas fichas</span>
         </div>
       </div>
-      <a href="login.html"><button class="secondary-btn" id="googleBtn" >Fazer Login</button></a>
+      <a class="secondary-btn" id="googleBtn" href="login.html">Fazer login</a>
     </div>
   </aside>
-    <main class="app-shell">
+
+  <main class="app-shell" id="appShell">
     <header class="topbar">
+      <button class="icon-btn mobile-menu" id="openSidebar" title="Abrir menu" onclick="abrirMenu()">☰</button>
       <div class="topbar-title">Ficha de Personagem</div>
+      <button type="button" class="tema-toggle" id="botaoTema" onclick="alternarModoEscuro()">Modo escuro</button>
     </header>
 
-<div class="character-sheet paper" id="sheetFront">
+    <div class="sheet-workspace">
+      <div class="character-sheet paper" id="sheetFront">
         <section class="hero-grid">
-          <div class="crest">T20</div>
-          <div class="field wide"><label>Personagem</label><input data-field="name" placeholder="Nome do personagem"></div>
-          <div class="field"><label>Raça</label><select data-field="race"></select></div>
-          <div class="field"><label>Origem</label><select data-field="origin"></select></div>
-          <div class="field"><label>Classe</label><select data-field="class"></select></div>
-          <div class="field"><label>Nível</label><input type="number" min="1" max="20" data-field="level"></div>
-          <div class="field"><label>Divindade</label><input data-field="deity"></div>
+          <label class="crest" for="f-image" title="Clique para enviar a imagem do personagem">
+            <img id="charImg" alt="Imagem do personagem" style="display: none">
+            <span id="crestText">T20</span>
+            <input type="file" id="f-image" accept="image/*" title="Enviar imagem do personagem" onchange="escolherImagem(this)">
+          </label>
+          <div class="hero-campos">
+            <div class="hero-linha">
+              <div class="field campo-nome">
+                <label for="f-name">Personagem</label>
+                <input id="f-name" placeholder="Nome do personagem" oninput="mudarTexto('name', this)">
+              </div>
+              <div class="field">
+                <label for="f-level">Nível</label>
+                <input id="f-level" type="number" min="1" max="20" oninput="mudarNumero('level', this)">
+              </div>
+            </div>
+            <div class="hero-linha segunda-linha">
+              <div class="field">
+                <label for="f-race">Raça</label>
+                <input id="f-race" list="lista-racas" placeholder="Buscar raça" autocomplete="off" oninput="mudarListado('race', this)" onchange="confirmarListado('race', this)" onfocus="abrirOpcoes('race', this)" onclick="abrirOpcoes('race', this)" onblur="fecharOpcoes('race', this)">
+                <datalist id="lista-racas"></datalist>
+              </div>
+              <div class="field">
+                <label for="f-origin">Origem</label>
+                <input id="f-origin" list="lista-origens" placeholder="Buscar origem" autocomplete="off" oninput="mudarListado('origin', this)" onchange="confirmarListado('origin', this)" onfocus="abrirOpcoes('origin', this)" onclick="abrirOpcoes('origin', this)" onblur="fecharOpcoes('origin', this)">
+                <datalist id="lista-origens"></datalist>
+              </div>
+              <div class="field">
+                <label for="f-class">Classe</label>
+                <input id="f-class" list="lista-classes" placeholder="Buscar classe" autocomplete="off" oninput="mudarListado('class', this)" onchange="confirmarListado('class', this)" onfocus="abrirOpcoes('class', this)" onclick="abrirOpcoes('class', this)" onblur="fecharOpcoes('class', this)">
+                <datalist id="lista-classes"></datalist>
+              </div>
+              <div class="field">
+                <label for="f-deity">Divindade</label>
+                <input id="f-deity" oninput="mudarTexto('deity', this)">
+              </div>
+            </div>
+          </div>
         </section>
 
         <section class="attributes panel">
@@ -49,48 +87,163 @@
         </section>
 
         <section class="resource-grid">
-          <div class="stat-box"><span>PV</span><strong id="pvMax">0</strong><input data-field="pvCurrent" type="number"></div>
-          <div class="stat-box"><span>PM</span><strong id="pmMax">0</strong><input data-field="pmCurrent" type="number"></div>
-          <div class="stat-box"><span>Desloc.</span><strong id="speed">9m</strong></div>
-          <div class="stat-box"><span>Defesa</span><strong id="defense">10</strong></div>
+          <div class="stat-box bar-box">
+            <span class="stat-rotulo">PV</span>
+            <input id="pvAtual" type="number" min="0" title="PV atuais" oninput="mudarNumero('pvCurrent', this)">
+            <strong id="pvMax">0</strong>
+            <div class="bar"><i id="pvFill"></i></div>
+          </div>
+          <div class="stat-box bar-box">
+            <span class="stat-rotulo">PM</span>
+            <input id="pmAtual" type="number" min="0" title="PM atuais" oninput="mudarNumero('pmCurrent', this)">
+            <strong id="pmMax">0</strong>
+            <div class="bar"><i id="pmFill"></i></div>
+          </div>
+          <div class="stat-box single">
+            <span class="stat-rotulo">Desloc.</span>
+            <div class="speed-inputs">
+              <input type="number" id="speedMeters" placeholder="9" min="0" step="1.5" title="Deslocamento em metros" oninput="mudarDeslocamento('metros', this)"> <small>m</small>
+              <span> / </span>
+              <input type="number" id="speedSquares" placeholder="6" min="0" title="Deslocamento em quadrados" oninput="mudarDeslocamento('quadrados', this)"> <small>q</small>
+            </div>
+          </div>
+          <div class="defense-box" id="defBox">
+            <div class="def-escudo" title="Defesa total">
+              <svg viewBox="0 0 64 76" fill="none" stroke="currentColor">
+                <path d="M32 3 L58 12 V36 C58 55 46 68 32 73 C18 68 6 55 6 36 V12 Z" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M32 10 L51 16.5 V36 C51 51 42 61 32 66 C22 61 13 51 13 36 V16.5 Z" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <strong id="defense">10</strong>
+            </div>
+            <div class="def-info">
+              <span class="def-titulo">Defesa</span>
+              <div class="def-formula">
+                <span>= 10 + DES (<b id="defDesMod">+0</b>) +</span>
+                <div class="def-col"><strong id="defEquipMod" title="Soma dos itens equipados">0</strong><small>Equip.</small></div>
+                <span>+</span>
+                <div class="def-col">
+                  <input type="number" id="defOutros" placeholder="0" title="Bônus outros de Defesa" oninput="mudarNumero('defOverride', this)">
+                  <small>Outros</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <div class="columns-2">
-          <section class="panel skills-panel">
+          <section class="panel skills-panel coluna">
             <div class="section-title">Perícias</div>
-            <div class="skill-head"><span></span><span>Perícia</span><span>Mod.</span><span></span></div>
+            <div class="skill-head">
+              <span class="col-dado"></span>
+              <span class="col-nome">Perícia</span>
+              <span class="col-atr">Atributo</span>
+              <span class="col-bonus" title="Modificador do atributo + metade do nível">Bônus</span>
+              <span class="col-treino">Treino</span>
+              <span class="col-outros">Outros</span>
+              <span class="col-total">Total</span>
+            </div>
             <div id="skillsList"></div>
           </section>
 
-          <div class="right-stack">
-            <section class="panel saving-panel">
-              <div class="section-title">Resistências</div>
-              <div class="saves" id="savesList"></div>
-            </section>
-
+          <div class="right-stack coluna">
             <section class="panel attack-panel">
               <div class="section-title">Ataques</div>
               <div class="resizable-list" id="attacksList"></div>
-              <button class="add-row" data-add="attack">+ adicionar ataque</button>
+              <button class="add-row" onclick="adicionarLinha('attacks')">+ adicionar ataque</button>
+            </section>
+
+            <section class="panel resizable-panel">
+              <div class="section-title">Habilidades</div>
+              <div class="resizable-list" id="abilitiesList"></div>
+              <div class="add-bar">
+                <button class="add-row" onclick="adicionarLinha('abilities')">+ adicionar habilidade</button>
+                <button class="add-row add-catalogo" onclick="abrirCatalogo('habilidades')">Catálogo de habilidades</button>
+              </div>
             </section>
           </div>
         </div>
 
-        <section class="panel resizable-panel">
-          <div class="section-title">Habilidades & Magias</div>
-          <div class="resizable-list" id="abilitiesList"></div>
-          <button class="add-row" data-add="ability">+ adicionar habilidade</button>
-        </section>
+        <div class="columns-2">
+          <section class="panel resizable-panel coluna">
+            <div class="section-title">Equipamento</div>
+            <div class="money-row">
+              <label for="f-money">T$</label>
+              <input id="f-money" type="number" min="0" oninput="mudarNumero('money', this)">
+              <span>Carga (espaços)</span>
+              <strong id="encumbrance">0 / 0</strong>
+            </div>
+            <div class="resizable-list" id="itemsList"></div>
+            <div class="add-bar">
+              <button class="add-row" onclick="adicionarLinha('items')">+ adicionar item</button>
+              <button class="add-row add-catalogo" onclick="abrirCatalogo('itens')">Catálogo de itens</button>
+            </div>
+          </section>
 
-        <section class="panel resizable-panel">
-          <div class="section-title">Equipamento</div>
-          <div class="money-row"><label>T$</label><input data-field="money" type="number" min="0"><span>Carga</span><strong id="encumbrance">0 / 0</strong></div>
-          <div class="resizable-list" id="itemsList"></div>
-          <button class="add-row" data-add="item">+ adicionar item</button>
-        </section>
+          <section class="panel resizable-panel coluna">
+            <div class="section-title">Magias</div>
+            <div class="resizable-list" id="spellsList"></div>
+            <div class="add-bar">
+              <button class="add-row" onclick="adicionarLinha('spells')">+ adicionar magia</button>
+              <button class="add-row add-catalogo" onclick="abrirCatalogo('magias')">Catálogo de magias</button>
+            </div>
+          </section>
+        </div>
       </div>
-    </section>
+    </div>
   </main>
+
+  <div class="modal" id="cropModal" style="display: none">
+    <div class="modal-box">
+      <h2>Ajustar imagem</h2>
+      <canvas id="cropCanvas" width="300" height="300" title="Área de recorte: arraste para posicionar a imagem" onpointerdown="comecarArrasto(event)" onpointermove="moverArrasto(event)" onpointerup="soltarArrasto()" onpointercancel="soltarArrasto()" onwheel="rodarZoom(event)"></canvas>
+      <p class="crop-dica">Arraste a imagem para posicionar. Use o zoom para aproximar.</p>
+      <label class="crop-zoom"><span>Zoom</span><input type="range" id="cropZoom" min="1" max="3" step="0.01" value="1" oninput="mudarZoom(this)"></label>
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn" onclick="fecharCorte()">Cancelar</button>
+        <button type="button" class="primary-btn" onclick="salvarCorte()">Salvar</button>
+      </div>
+    </div>
   </div>
+
+  <div class="modal" id="periciaModal" style="display: none" onclick="cliqueFundoPericia(event)">
+    <div class="modal-box pericia-box">
+      <header class="modal-head">
+        <h2 id="periciaTitulo"></h2>
+        <button type="button" class="icon-btn modal-x" id="periciaFechar" title="Fechar" onclick="fecharPericia()">×</button>
+      </header>
+      <div class="modal-body" id="periciaConteudo"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="catalogoModal" style="display: none" onclick="cliqueFundoCatalogo(event)">
+    <div class="modal-box pericia-box cat-box">
+      <header class="modal-head">
+        <h2>Catálogo</h2>
+        <button type="button" class="icon-btn modal-x" title="Fechar" onclick="fecharCatalogo()">×</button>
+      </header>
+      <div class="cat-topo">
+        <div class="cat-abas">
+          <button type="button" class="cat-aba ativa" id="aba-itens" onclick="trocarAba('itens')">Itens</button>
+          <button type="button" class="cat-aba" id="aba-habilidades" onclick="trocarAba('habilidades')">Habilidades</button>
+          <button type="button" class="cat-aba" id="aba-magias" onclick="trocarAba('magias')">Magias</button>
+        </div>
+        <input type="search" id="catBusca" placeholder="Buscar pelo nome..." title="Buscar no catálogo" autocomplete="off" oninput="renderCatalogo()">
+      </div>
+      <div class="modal-body" id="catLista"></div>
+      <div class="cat-status" id="catStatus"></div>
+    </div>
+  </div>
+
+  <div id="flash"></div>
+  <div class="roll-popup" id="rollPopup"></div>
+  <div class="toasts" id="toasts"></div>
+
+  <script src="descricoes.js"></script>
+  <script src="catalogo-itens.js"></script>
+  <script src="catalogo-habilidades.js"></script>
+  <script src="catalogo-magias.js"></script>
+  <script src="catalogo.js"></script>
+  <script src="script.js"></script>
+  <script src="tema.js"></script>
 </body>
 </html>

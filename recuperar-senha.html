@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="tormenta.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <title>Recuperar Senha - F.A.T.O</title>
 </head>
 
-<body>
+<body class="auth">
+    <button type="button" class="tema-toggle" id="botaoTema" onclick="alternarModoEscuro()">Modo escuro</button>
 
     <main class="container">
 
-        <form id="recuperarForm">
+        <form id="recuperarForm" onsubmit="return recuperarSenha()">
 
             <h1>F.A.T.O</h1>
 
@@ -25,11 +29,7 @@
             </p>
 
             <div class="input-box">
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    required
-                >
+                <input type="email" placeholder="E-mail" required>
             </div>
 
             <button type="submit" class="login">
@@ -47,14 +47,13 @@
 
     </main>
 
+    <script src="tema.js"></script>
     <script>
-        document.getElementById("recuperarForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
+        function recuperarSenha() {
             alert("Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.");
-
             window.location.href = "login.html";
-        });
+            return false;
+        }
     </script>
 
 </body>
