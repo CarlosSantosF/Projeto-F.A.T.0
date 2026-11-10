@@ -1,3 +1,205 @@
+var tccEtapa = document.body.id;
+var tccLista = [];
+var tccEscolhaAtual = '';
+
+function tccPegarLista() {
+    if (typeof DADOS_CRIACAO === 'undefined') {
+        return [];
+    }
+    if (!DADOS_CRIACAO[tccEtapa]) {
+        return [];
+    }
+    return DADOS_CRIACAO[tccEtapa];
+}
+
+function tccMontarCards() {
+    var area = document.getElementById('tcc-grid');
+    if (!area) {
+        return;
+    }
+    var html = '';
+    for (var i = 0; i < tccLista.length; i++) {
+        var item = tccLista[i];
+        var classe = 'tcc-card tcc-card-busca';
+        if (item.img === '') {
+            classe = classe + ' tcc-card-sem-img';
+        }
+        html = html + '<div class="' + classe + '">';
+        if (item.img !== '') {
+            html = html + '<img class="tcc-card-img" src="' + item.img + '" alt="' + item.nome + '">';
+        }
+        html = html + '<span class="tcc-selo" id="tcc-selo-' + i + '">Sua escolha</span>';
+        html = html + '<h2>' + item.nome + '</h2>';
+        html = html + '<p class="tcc-card-resumo">' + item.resumo + '</p>';
+        html = html + '<button type="button" class="tcc-botao tcc-detalhes" id="tcc-detalhe-' + i + '">Ver detalhes</button>';
+        html = html + '</div>';
+    }
+    area.innerHTML = html;
+
+    for (var j = 0; j < tccLista.length; j++) {
+        var botao = document.getElementById('tcc-detalhe-' + j);
+        botao.onclick = tccAbrirModal;
+    }
+}
+
+function tccBuscarCards() {
+    var texto = tccBusca.value.toLowerCase();
+    var cards = document.getElementsByClassName('tcc-card-busca');
+    var achou = 0;
+
+    for (var i = 0; i < cards.length; i++) {
+        var conteudo = (tccLista[i].nome + ' ' + tccLista[i].resumo).toLowerCase();
+        if (conteudo.indexOf(texto) === -1) {
+            cards[i].style.display = 'none';
+        } else {
+            cards[i].style.display = 'flex';
+            achou = achou + 1;
+        }
+    }
+
+    var aviso = document.getElementById('tcc-vazio');
+    if (achou === 0) {
+        aviso.style.display = 'block';
+    } else {
+        aviso.style.display = 'none';
+    }
+}
+
+function tccAbrirModal() {
+    var indice = Number(this.id.replace('tcc-detalhe-', ''));
+    var item = tccLista[indice];
+
+    document.getElementById('tcc-modal-titulo').innerText = item.nome;
+
+    var figura = document.getElementById('tcc-modal-img');
+    if (item.img === '') {
+        figura.style.display = 'none';
+    } else {
+        figura.style.display = 'block';
+        figura.src = item.img;
+        figura.alt = item.nome;
+    }
+
+    var html = '';
+    for (var i = 0; i < item.texto.length; i++) {
+        html = html + '<p>' + item.texto[i] + '</p>';
+    }
+    if (item.regras.length > 0) {
+        html = html + '<h3>Regras</h3>';
+        for (var j = 0; j < item.regras.length; j++) {
+            html = html + '<p class="tcc-regra">' + item.regras[j] + '</p>';
+        }
+    }
+    document.getElementById('tcc-modal-corpo').innerHTML = html;
+    document.getElementById('tcc-modal-fonte').innerText = 'Fonte: Tormenta20 Livro Básico, página ' + item.pagina + '.';
+
+    tccEscolhaAtual = item.nome;
+    tccModal.style.display = 'flex';
+    var caixa = document.getElementById('tcc-modal-caixa');
+    caixa.scrollTop = 0;
+    caixa.focus();
+    document.body.classList.add('tcc-travado');
+}
+
+function tccFecharModal() {
+    tccModal.style.display = 'none';
+    document.body.classList.remove('tcc-travado');
+}
+
+function tccEscolherOpcao() {
+    localStorage.setItem('tcc-' + tccEtapa, tccEscolhaAtual);
+    tccMostrarEscolha();
+    tccMarcarCardEscolhido();
+    tccFecharModal();
+}
+
+function tccMarcarCardEscolhido() {
+    var escolha = localStorage.getItem('tcc-' + tccEtapa);
+    var cards = document.getElementsByClassName('tcc-card-busca');
+
+    for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var selo = document.getElementById('tcc-selo-' + i);
+
+        if (tccLista[i].nome === escolha) {
+            card.classList.add('tcc-card-escolhido');
+            selo.style.display = 'block';
+        } else {
+            card.classList.remove('tcc-card-escolhido');
+            selo.style.display = 'none';
+        }
+    }
+}
+
+function tccCliqueNoFundo(evento) {
+    if (evento.target === tccModal) {
+        tccFecharModal();
+    }
+}
+
+function tccTeclaEsc(evento) {
+    if (evento.key === 'Escape') {
+        tccFecharModal();
+    }
+}
+
+function tccMostrarEscolha() {
+    var aviso = document.getElementById('tcc-escolhido');
+    if (!aviso) {
+        return;
+    }
+    var escolha = localStorage.getItem('tcc-' + tccEtapa);
+    if (escolha === null) {
+        aviso.innerText = 'Nenhuma escolha';
+        aviso.className = 'tcc-escolhido';
+    } else {
+        aviso.innerText = 'Escolha: ' + escolha;
+        aviso.className = 'tcc-escolhido tcc-escolhido-feita';
+    }
+}
+
+function tccFinalizar() {
+    localStorage.setItem('tcc-finalizado', 'sim');
+}
+
+function tccRecomecar() {
+    localStorage.removeItem('tcc-race');
+    localStorage.removeItem('tcc-origin');
+    localStorage.removeItem('tcc-class');
+    localStorage.removeItem('tcc-deity');
+    localStorage.removeItem('tcc-finalizado');
+}
+
+var tccBusca = document.getElementById('tcc-busca');
+var tccModal = document.getElementById('tcc-modal');
+
+if (tccBusca) {
+    tccLista = tccPegarLista();
+    tccMontarCards();
+    tccMostrarEscolha();
+    tccMarcarCardEscolhido();
+    tccBusca.addEventListener('input', tccBuscarCards);
+    tccModal.addEventListener('click', tccCliqueNoFundo);
+    document.addEventListener('keydown', tccTeclaEsc);
+    document.getElementById('tcc-fechar').addEventListener('click', tccFecharModal);
+    document.getElementById('tcc-escolher').addEventListener('click', tccEscolherOpcao);
+}
+
+var tccBotaoFinalizar = document.getElementById('tcc-finalizar');
+if (tccBotaoFinalizar) {
+    tccBotaoFinalizar.addEventListener('click', tccFinalizar);
+}
+
+var tccBotaoCriar = document.getElementById('tcc-criar');
+if (tccBotaoCriar) {
+    tccBotaoCriar.addEventListener('click', tccRecomecar);
+}
+
+var tccBotaoCriarFim = document.getElementById('tcc-criar-fim');
+if (tccBotaoCriarFim) {
+    tccBotaoCriarFim.addEventListener('click', tccRecomecar);
+}
+
 var D20 = '<svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor">' +
   '<path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5,8.09V15.91L12,19.85L19,15.91V8.09L12,4.15M14.93,8.27A2.57,2.57 0 0,1 17.5,10.84V13.5C17.5,14.9 16.35,16.05 14.93,16.05C13.5,16.05 12.36,14.9 12.36,13.5V10.84A2.57,2.57 0 0,1 14.93,8.27M14.92,9.71C14.34,9.71 13.86,10.18 13.86,10.77V13.53C13.86,14.12 14.34,14.6 14.92,14.6C15.5,14.6 16,14.12 16,13.53V10.77C16,10.18 15.5,9.71 14.92,9.71M11.45,14.76V15.96L6.31,15.93V14.91C6.31,14.91 9.74,11.58 9.75,10.57C9.75,9.33 8.73,9.46 8.73,9.46C8.73,9.46 7.75,9.5 7.64,10.71L6.14,10.76C6.14,10.76 6.18,8.26 8.83,8.26C11.2,8.26 11.23,10.04 11.23,10.5C11.23,12.18 8.15,14.77 8.15,14.77L11.45,14.76Z"/></svg>';
 
@@ -868,9 +1070,25 @@ function atualizarCampoSeNaoEstiverEditando(id, valor) {
   }
 }
 
-function calc() {
-  var nivel = nivelAtual();
+function dadosDaClasse() {
+  var dadosClasse = CLASSES[S.class];
+  if (!dadosClasse) {
+    dadosClasse = { pvInicial: 0, pvPorNivel: 0, pmPorNivel: 0 };
+  }
+  return dadosClasse;
+}
 
+function pvMaximo() {
+  var dadosClasse = dadosDaClasse();
+  var con = modDoAtributo('con');
+  return Math.max(1, dadosClasse.pvInicial + con + (nivelAtual() - 1) * (dadosClasse.pvPorNivel + con));
+}
+
+function pmMaximo() {
+  return Math.max(1, dadosDaClasse().pmPorNivel * nivelAtual());
+}
+
+function calc() {
   for (var a = 0; a < ATRIBUTOS.length; a++) {
     var chave = ATRIBUTOS[a].chave;
     var bonusRaca = 0;
@@ -894,13 +1112,8 @@ function calc() {
     atualizarCampoSeNaoEstiverEditando('outros-' + p, bonusOutros(nome) || '');
   }
 
-  var dadosClasse = CLASSES[S.class];
-  if (!dadosClasse) {
-    dadosClasse = { pvInicial: 0, pvPorNivel: 0, pmPorNivel: 0 };
-  }
-  var con = modDoAtributo('con');
-  var pvMax = Math.max(1, dadosClasse.pvInicial + con + (nivel - 1) * (dadosClasse.pvPorNivel + con));
-  var pmMax = Math.max(1, dadosClasse.pmPorNivel * nivel);
+  var pvMax = pvMaximo();
+  var pmMax = pmMaximo();
   document.getElementById('pvMax').textContent = pvMax;
   document.getElementById('pmMax').textContent = pmMax;
   atualizarBarra('pvFill', S.pvCurrent, pvMax, true);
@@ -1105,6 +1318,7 @@ function mudarNumero(campo, elemento) {
     S[campo] = Number(elemento.value) || 0;
   }
   if (campo === 'level') {
+    S.level = Math.min(20, Math.max(1, S.level));
     sincronizar();
     renderListas();
   }
@@ -1321,8 +1535,8 @@ function excluirFicha(indice) {
 }
 
 function novaFichaClick() {
-  FICHAS.push(novaFicha());
-  carregar(FICHAS.length - 1);
+  tccRecomecar();
+  window.location.href = 'criacao-raca.html';
 }
 
 function abrirMenu() {
@@ -1351,7 +1565,11 @@ function recolherMenu() {
 var MODAIS = ['cropModal', 'periciaModal', 'catalogoModal'];
 
 function modalAberto(id) {
-  return document.getElementById(id).style.display === 'flex';
+  var modal = document.getElementById(id);
+  if (!modal) {
+    return false;
+  }
+  return modal.style.display === 'flex';
 }
 
 function atualizarRolagemDaPagina() {
@@ -1396,9 +1614,12 @@ var CV = 300;
 var RAIO = 130;
 var CORTE = { img: null, base: 1, zoom: 1, x: 0, y: 0 };
 var cvCorte = document.getElementById('cropCanvas');
-var ctx = cvCorte.getContext('2d');
+var ctx = null;
 var arrasto = null;
-ctx.imageSmoothingQuality = 'high';
+if (cvCorte) {
+  ctx = cvCorte.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+}
 
 function escolherImagem(campoArquivo) {
   var arquivo = campoArquivo.files[0];
@@ -2198,12 +2419,41 @@ function iniciar() {
       FICHAS[j].bonusRaca = copiarObjeto(RACAS_ATRIBUTOS[FICHAS[j].race] || {});
     }
   }
-  if (salvo) {
+  if (localStorage.getItem('tcc-finalizado') === 'sim') {
+    criarFichaDaCriacao();
+  } else if (salvo) {
     carregar(salvo.atual);
   } else {
     carregar(0);
   }
 }
 
-window.onpagehide = salvarAgora;
-iniciar();
+function criarFichaDaCriacao() {
+  var ficha = novaFicha();
+  var campos = ['race', 'origin', 'class', 'deity'];
+
+  for (var i = 0; i < campos.length; i++) {
+    var valor = localStorage.getItem('tcc-' + campos[i]);
+    if (valor !== null) {
+      ficha[campos[i]] = valor;
+    }
+    localStorage.removeItem('tcc-' + campos[i]);
+  }
+  localStorage.removeItem('tcc-finalizado');
+
+  FICHAS.push(ficha);
+  carregar(FICHAS.length - 1);
+  aplicarRaca();
+  sincronizar();
+  renderListas();
+  S.pvCurrent = pvMaximo();
+  S.pmCurrent = pmMaximo();
+  preencherCampos();
+  calc();
+  salvarAgora();
+}
+
+if (document.getElementById('lista-racas')) {
+  window.onpagehide = salvarAgora;
+  iniciar();
+}

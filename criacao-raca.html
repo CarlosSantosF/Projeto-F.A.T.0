@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F.A.T.O - Criação: Raça</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="tcc" id="race">
+    <div class="tcc-header">
+        <a href="index.html" class="tcc-logo">F.A.T.O</a>
+        <div class="tcc-menu">
+            <a href="login.html" class="secondary-btn">Login</a>
+            <a href="cadastre-se.html" class="secondary-btn">Cadastre-se</a>
+            <button type="button" class="tema-toggle" id="botaoTema" onclick="alternarModoEscuro()"></button>
+        </div>
+    </div>
+
+    <div class="tcc-principal">
+        <p class="tcc-etapa">Passo 1 de 4</p>
+        <h1 class="tcc-titulo">Criação: Raça</h1>
+        <div class="tcc-busca">
+            <input type="text" id="tcc-busca" placeholder="Buscar raça...">
+        </div>
+
+        <p id="tcc-escolhido" class="tcc-escolhido">Nenhuma escolha</p>
+
+        <div class="tcc-grid" id="tcc-grid"></div>
+
+        <p id="tcc-vazio" class="tcc-vazio">Nenhum resultado para essa busca.</p>
+
+        <div class="tcc-rodape">
+            <a href="index.html" class="secondary-btn">Voltar</a>
+            <a href="criacao-origem.html" class="tcc-botao">Próximo Passo</a>
+        </div>
+    </div>
+
+    <div class="tcc-modal" id="tcc-modal">
+        <div class="tcc-modal-caixa" id="tcc-modal-caixa" tabindex="-1">
+            <button class="tcc-fechar" id="tcc-fechar">X</button>
+            <img class="tcc-modal-img" id="tcc-modal-img" src="" alt="">
+            <h2 id="tcc-modal-titulo">Detalhes</h2>
+            <div id="tcc-modal-corpo"></div>
+            <p class="tcc-fonte" id="tcc-modal-fonte"></p>
+            <button class="tcc-botao" id="tcc-escolher">Escolher</button>
+        </div>
+    </div>
+
+    <script src="criacao-dados.js"></script>
+    <script src="script.js"></script>
+    <script src="tema.js"></script>
+</body>
+</html>
